@@ -1,4 +1,4 @@
-package pl.edu.agh.toik.console;
+package pl.edu.agh.toik.gui;
 
 import java.io.BufferedReader;
 import java.io.IOException;
