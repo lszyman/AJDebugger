@@ -23,6 +23,10 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
+import pl.edu.agh.toik.debugger.Debugger;
+import pl.edu.agh.toik.debugger.DebuggerInterfaceImpl;
+import pl.edu.agh.toik.example.Car;
+
 public class MenuFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -37,6 +41,9 @@ public class MenuFrame extends JFrame {
 	
 
 	public static void main(String[] args) {
+		Debugger debugger = Debugger.getInstance();
+		debugger.setInterface(new DebuggerInterfaceImpl());
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -126,10 +133,10 @@ public class MenuFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				TreePath treePath = treePackages.getSelectionPath();
 				if(treePath != null) {
-					int count = treePath.getPathCount();
-					String newElement = treePath.getPathComponent(count-2)+"."+treePath.getLastPathComponent();
+					String newElement = treePath.getLastPathComponent().toString();
 					if(!breakpoints.contains(newElement))
 						breakpoints.addElement(newElement);
+						Debugger.getInstance().addBreakpoint(newElement);
 				}
 			}
 		});
@@ -143,11 +150,26 @@ public class MenuFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				int index = jlistBreakpoints.getSelectedIndex();
-				if(index != -1)
-					breakpoints.remove(index);
+				if(index != -1) {
+					String removed = breakpoints.remove(index);
+					Debugger.getInstance().removeBreakpoint(removed);
+				}
 			}
 		});
 		contentPane.add(btnUnsetBreakpoint);
+		
+		JButton btnTestBreakpoint = new JButton();
+		btnTestBreakpoint.setBounds(15, 675, 40, 40);
+		btnTestBreakpoint.setContentAreaFilled(true);
+		btnTestBreakpoint.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				Car car = new Car();
+				car.fuelUp();
+				car.setDriver("SomeDriver");
+			}
+		});
+		contentPane.add(btnTestBreakpoint);
 	}
 	
 	private void createPackageTree(String packageName) {
@@ -168,16 +190,9 @@ public class MenuFrame extends JFrame {
 					
 					Method[] methods = getMethods(clazzString);
 					for(Method method : methods) {
-						Class<?>[] paramTypes = method.getParameterTypes();
-						String params = "(";
-						for(Class<?> type : paramTypes){
-							params += type.getSimpleName();
-						}
-						
-						String returnType = method.getReturnType().getCanonicalName();
-						String functionString = returnType+" "+method.getName()+params+")";
-						
-						classItem.add(new DefaultMutableTreeNode(functionString));
+						String signature = method.toString();
+						String withoutAccessModifier = signature.substring(signature.indexOf(method.getReturnType().getCanonicalName()));
+						classItem.add(new DefaultMutableTreeNode(withoutAccessModifier));
 					}
 					packageItem.add(classItem);
 				}

@@ -15,6 +15,9 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
+import pl.edu.agh.toik.debugger.Debugger;
+import pl.edu.agh.toik.debugger.DebuggerInterfaceImpl;
+
 public class Main {
 	private static String currentPackage = "pl.edu.agh.toik.example";
 	
@@ -25,6 +28,8 @@ public class Main {
 	 
 			String input;
 			
+			Debugger debugger = Debugger.getInstance();
+			debugger.setInterface(new DebuggerInterfaceImpl());
 	 
 			while((input=br.readLine())!="") {
 				String [] command = input.split(" ");
