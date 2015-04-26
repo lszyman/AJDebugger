@@ -13,7 +13,10 @@ public aspect Breakpoints {
 		Debugger debugger = Debugger.getInstance();
 		List<String> signatures = debugger.getBreakpointSignatrues();
 		
-		if(signatures.contains(thisJoinPoint.getSignature().toString())) {
+		String signature = thisJoinPoint.getSignature().toLongString();
+		signature = signature.substring(signature.indexOf(" ")+1);
+		
+		if(signatures.contains(signature)) {
 		
 			System.out.println("JoinPoint " + thisJoinPoint.toShortString());
 			System.out.println("\tKind: " + thisJoinPoint.getKind());
@@ -21,7 +24,7 @@ public aspect Breakpoints {
 			System.out.println("\tSourceLocation: " + thisJoinPoint.getSourceLocation());
 			System.out.println("\tArgs: ");
 			for(Object arg : thisJoinPoint.getArgs())
-				System.out.println("\t\tClass: " + arg.getClass().getName() + ", toString(): " + arg.toString());
+				System.out.println("\t\tClass: " + arg.getClass().getName() + ",\tName: " + arg.toString());
 			
 			debugger.pauseExecution();
 			
