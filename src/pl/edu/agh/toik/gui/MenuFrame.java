@@ -38,7 +38,6 @@ public class MenuFrame extends JFrame {
 	private JTextField txtFldPackageSearch;
 	private JList<String> jlistBreakpoints;
 	private DefaultListModel<String> breakpoints = new DefaultListModel<String>();
-	
 
 	public static void main(String[] args) {
 		Debugger debugger = Debugger.getInstance();
@@ -89,7 +88,7 @@ public class MenuFrame extends JFrame {
 		JScrollPane spBreakpoints = new JScrollPane(jlistBreakpoints);
 		spBreakpoints.setBounds(465, 50, 400, 600);
 		contentPane.add(spBreakpoints);
-		
+
 	}
 	
 	private void createLabels() {
