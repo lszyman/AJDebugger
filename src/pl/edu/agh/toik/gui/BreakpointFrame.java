@@ -81,6 +81,7 @@ public class BreakpointFrame extends JFrame {
 		btnNextBreakpoint.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				Debugger.getInstance().unpause();
 				dispose();
 			}
 		});

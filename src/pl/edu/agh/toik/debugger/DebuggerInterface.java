@@ -1,9 +1,8 @@
 package pl.edu.agh.toik.debugger;
 
-import pl.edu.agh.toik.gui.BreakpointFrame;
+import org.aspectj.lang.JoinPoint;
 
 public interface DebuggerInterface {
 
-	void takeCommand();
-	void setBreakpointFrame(BreakpointFrame bf);
+	void takeCommand(JoinPoint joinpoint);
 }

@@ -25,6 +25,8 @@ import org.reflections.util.FilterBuilder;
 
 import pl.edu.agh.toik.debugger.Debugger;
 import pl.edu.agh.toik.debugger.DebuggerInterfaceImpl;
+import pl.edu.agh.toik.debugger.DebuggerMode;
+import pl.edu.agh.toik.debugger.FrameDebuggerInterface;
 import pl.edu.agh.toik.example.Car;
 
 public class MenuFrame extends JFrame {
@@ -38,9 +40,11 @@ public class MenuFrame extends JFrame {
 	private JTextField txtFldPackageSearch;
 	private JList<String> jlistBreakpoints;
 	private DefaultListModel<String> breakpoints = new DefaultListModel<String>();
+	private final ButtonGroup modeButtonGroup = new ButtonGroup();
 
 	public static void main(String[] args) {
 		Debugger debugger = Debugger.getInstance();
+		//debugger.setInterface(new FrameDebuggerInterface());
 		debugger.setInterface(new DebuggerInterfaceImpl());
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -88,6 +92,48 @@ public class MenuFrame extends JFrame {
 		JScrollPane spBreakpoints = new JScrollPane(jlistBreakpoints);
 		spBreakpoints.setBounds(465, 50, 400, 600);
 		contentPane.add(spBreakpoints);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(93, 675, 138, 60);
+		contentPane.add(panel);
+		
+		JLabel lblModes = new JLabel("Modes:");
+		panel.add(lblModes);
+		
+		JSplitPane splitPane = new JSplitPane();
+		panel.add(splitPane);
+		
+		JRadioButton rdbtnInclusiveMode = new JRadioButton("Include");
+		rdbtnInclusiveMode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Debugger.getInstance().setMode(DebuggerMode.INCLUSIVE);
+			}
+		});
+		modeButtonGroup.add(rdbtnInclusiveMode);
+		rdbtnInclusiveMode.setSelected(true);
+		splitPane.setLeftComponent(rdbtnInclusiveMode);
+		
+		JRadioButton rdbtnExclusiveMode = new JRadioButton("Exclude");
+		rdbtnExclusiveMode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Debugger.getInstance().setMode(DebuggerMode.EXCLUSIVE);
+			}
+		});
+		modeButtonGroup.add(rdbtnExclusiveMode);
+		splitPane.setRightComponent(rdbtnExclusiveMode);
+		
+		JButton btnRefreshBreakpoints = new JButton((Icon) null);
+		btnRefreshBreakpoints.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(String signature : Debugger.getInstance().getBreakpointSignatrues()) {
+					if(!breakpoints.contains(signature))
+						breakpoints.addElement(signature);
+				}
+			}
+		});
+		btnRefreshBreakpoints.setContentAreaFilled(false);
+		btnRefreshBreakpoints.setBounds(420, 326, 40, 40);
+		contentPane.add(btnRefreshBreakpoints);
 
 	}
 	
@@ -158,7 +204,8 @@ public class MenuFrame extends JFrame {
 		contentPane.add(btnUnsetBreakpoint);
 		
 		JButton btnTestBreakpoint = new JButton();
-		btnTestBreakpoint.setBounds(15, 675, 40, 40);
+		btnTestBreakpoint.setText("Test");
+		btnTestBreakpoint.setBounds(15, 675, 53, 40);
 		btnTestBreakpoint.setContentAreaFilled(true);
 		btnTestBreakpoint.addActionListener(new ActionListener() {
 			
