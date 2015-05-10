@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 
 import org.aspectj.lang.JoinPoint;
 
+import pl.edu.agh.toik.interfaces.DebuggerInterface;
+
 // simple console interface
 
 public class DebuggerInterfaceImpl implements DebuggerInterface {
@@ -21,8 +23,10 @@ public class DebuggerInterfaceImpl implements DebuggerInterface {
 		pointcutInfo.append("\tSignature: " + joinpoint.getSignature()+"\n");
 		pointcutInfo.append("\tSourceLocation: " + joinpoint.getSourceLocation()+"\n");
 		pointcutInfo.append("\tArgs:\n");
+		
 		for(Object arg : joinpoint.getArgs())
 			pointcutInfo.append("\tClass: " + arg.getClass().getName() + ",\tValue: " + arg.toString()+"\n");
+		
 		System.out.print(pointcutInfo);
 		
 		try {
@@ -50,5 +54,4 @@ public class DebuggerInterfaceImpl implements DebuggerInterface {
 			System.out.println("Error while reading from System.in\n");
 		}
 	}
-
 }

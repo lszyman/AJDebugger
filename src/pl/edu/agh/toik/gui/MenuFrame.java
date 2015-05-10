@@ -24,9 +24,8 @@ import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
 import pl.edu.agh.toik.debugger.Debugger;
-import pl.edu.agh.toik.debugger.DebuggerInterfaceImpl;
 import pl.edu.agh.toik.debugger.DebuggerMode;
-import pl.edu.agh.toik.debugger.FrameDebuggerInterface;
+import pl.edu.agh.toik.debugger.FrameDebuggerInterfaceImpl;
 import pl.edu.agh.toik.example.Car;
 
 public class MenuFrame extends JFrame {
@@ -44,8 +43,8 @@ public class MenuFrame extends JFrame {
 
 	public static void main(String[] args) {
 		Debugger debugger = Debugger.getInstance();
-		//debugger.setInterface(new FrameDebuggerInterface());
-		debugger.setInterface(new DebuggerInterfaceImpl());
+		debugger.setInterface(new FrameDebuggerInterfaceImpl());
+		//debugger.setInterface(new DebuggerInterfaceImpl());
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -94,7 +93,7 @@ public class MenuFrame extends JFrame {
 		contentPane.add(spBreakpoints);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(93, 675, 138, 60);
+		panel.setBounds(198, 668, 138, 60);
 		contentPane.add(panel);
 		
 		JLabel lblModes = new JLabel("Modes:");
@@ -121,20 +120,6 @@ public class MenuFrame extends JFrame {
 		});
 		modeButtonGroup.add(rdbtnExclusiveMode);
 		splitPane.setRightComponent(rdbtnExclusiveMode);
-		
-		JButton btnRefreshBreakpoints = new JButton((Icon) null);
-		btnRefreshBreakpoints.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				for(String signature : Debugger.getInstance().getBreakpointSignatrues()) {
-					if(!breakpoints.contains(signature))
-						breakpoints.addElement(signature);
-				}
-			}
-		});
-		btnRefreshBreakpoints.setContentAreaFilled(false);
-		btnRefreshBreakpoints.setBounds(420, 326, 40, 40);
-		contentPane.add(btnRefreshBreakpoints);
-
 	}
 	
 	private void createLabels() {
@@ -151,6 +136,7 @@ public class MenuFrame extends JFrame {
 		BufferedImage btnIconSearch = ImageIO.read(new File("images/search.png"));
 		BufferedImage btnIconForward = ImageIO.read(new File("images/forward.png"));
 		BufferedImage btnIconBack = ImageIO.read(new File("images/back.png"));
+		BufferedImage btnIconRefresh = ImageIO.read(new File("images/refresh.png"));
 		
 		JButton btnLookFor = new JButton(new ImageIcon(btnIconSearch));
 		btnLookFor.setBounds(383, 12, 32, 32);
@@ -205,17 +191,36 @@ public class MenuFrame extends JFrame {
 		
 		JButton btnTestBreakpoint = new JButton();
 		btnTestBreakpoint.setText("Test");
-		btnTestBreakpoint.setBounds(15, 675, 53, 40);
+		btnTestBreakpoint.setBounds(15, 675, 106, 40);
 		btnTestBreakpoint.setContentAreaFilled(true);
 		btnTestBreakpoint.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				Car car = new Car();
-				car.fuelUp();
-				car.setDriver("SomeDriver");
+				new Car().blank();
+				new Thread() {
+					@Override
+					public void run() {
+						Car car = new Car();
+						car.fuelUp();
+						car.setDriver("SomeDriver");
+					}
+				}.start();
 			}
 		});
 		contentPane.add(btnTestBreakpoint);
+		
+		JButton btnRefreshBreakpoints = new JButton(new ImageIcon(btnIconRefresh));
+		btnRefreshBreakpoints.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(String signature : Debugger.getInstance().getBreakpointSignatrues()) {
+					if(!breakpoints.contains(signature))
+						breakpoints.addElement(signature);
+				}
+			}
+		});
+		btnRefreshBreakpoints.setContentAreaFilled(false);
+		btnRefreshBreakpoints.setBounds(420, 326, 40, 40);
+		contentPane.add(btnRefreshBreakpoints);
 	}
 	
 	private void createPackageTree(String packageName) {

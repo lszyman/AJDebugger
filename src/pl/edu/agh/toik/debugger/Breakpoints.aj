@@ -2,7 +2,6 @@ package pl.edu.agh.toik.debugger;
 
 import java.util.List;
 
-import pl.edu.agh.toik.gui.BreakpointFrame;
 
 public aspect Breakpoints {
 	

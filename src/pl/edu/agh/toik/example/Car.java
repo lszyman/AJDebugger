@@ -12,4 +12,8 @@ public class Car implements Vehicle {
 		this.driver = driver;
 		System.out.println("Driver is now "+driver);
 	}
+	
+	public void blank() {
+		
+	}
 }

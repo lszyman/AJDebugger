@@ -14,13 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.JTextArea;
 
-import pl.edu.agh.toik.debugger.Debugger;
-import pl.edu.agh.toik.debugger.DebuggerInterface;
-import pl.edu.agh.toik.debugger.DebuggerInterfaceImpl;
+import pl.edu.agh.toik.interfaces.Command;
 
 public class BreakpointFrame extends JFrame {
 
@@ -30,7 +26,9 @@ public class BreakpointFrame extends JFrame {
 	private JButton btnNextBreakpoint;
 	private JButton btnNextPointcut;
 	
-	public BreakpointFrame() {
+	private Command command;
+	
+	public BreakpointFrame(String breakpointInfo, Command command) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(400, 200, 800, 600);
 		contentPane = new JPanel();
@@ -38,10 +36,10 @@ public class BreakpointFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
 		textArea = new JTextArea();
 		textArea.setBorder(new EmptyBorder(5, 5, 5, 5));
 		textArea.setEditable(false);
+		textArea.setText(breakpointInfo);
 		
 		JScrollPane spBreakpoints = new JScrollPane(textArea);
 		spBreakpoints.setBounds(5, 5, 400, 300);
@@ -54,6 +52,9 @@ public class BreakpointFrame extends JFrame {
 			e.printStackTrace();
 		}
 
+		setVisible(true);
+		
+		this.command = command;
 	}
 	
 	private void createButtons() throws IOException {
@@ -68,7 +69,8 @@ public class BreakpointFrame extends JFrame {
 		btnNextPointcut.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				//TODO:;
+				command.execute();
+				dispose();
 			}
 		});
 		contentPane.add(btnNextPointcut);
@@ -81,14 +83,10 @@ public class BreakpointFrame extends JFrame {
 		btnNextBreakpoint.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				Debugger.getInstance().unpause();
+				command.execute();
 				dispose();
 			}
 		});
 		contentPane.add(btnNextBreakpoint);
-	}
-	
-	public JTextArea getTextArea() {
-		return textArea;
 	}
 }

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
 
-import pl.edu.agh.toik.gui.BreakpointFrame;
-import pl.edu.agh.toik.gui.MenuFrame;
+import pl.edu.agh.toik.interfaces.DebuggerInterface;
+
 
 public class Debugger {
 
@@ -14,9 +14,7 @@ public class Debugger {
 	private DebuggerInterface debuggerInterface;
 	
 	private List<String> breakpointSignatures = new ArrayList<String>();
-	private BreakpointFrame breakpointFrame;
 	private DebuggerMode mode;
-	private boolean stopped;
 	
 	public static Debugger getInstance() {
 		if(instance == null) {
@@ -33,25 +31,8 @@ public class Debugger {
 		this.debuggerInterface = debuggerInterface;
 	}
 	
-//	public DebuggerInterface getInterface() {
-//		return this.debuggerInterface;
-//	}
-	
 	public synchronized void pauseExecution(JoinPoint joinpoint) {
 		this.debuggerInterface.takeCommand(joinpoint);
-//		stopped = true;
-//		while(stopped) {
-//			try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-	}
-	
-	public void unpause() {
-		stopped = false;
 	}
 	
 	public void addBreakpoint(String signature) {
@@ -64,11 +45,6 @@ public class Debugger {
 
 	public List<String> getBreakpointSignatrues() {
 		return breakpointSignatures;
-	}
-	
-	public void setBreakpointFrame(BreakpointFrame breakpointFrame) {
-		this.breakpointFrame = breakpointFrame;
-		this.breakpointFrame.setVisible(true);
 	}
 	
 	public DebuggerMode getMode() {

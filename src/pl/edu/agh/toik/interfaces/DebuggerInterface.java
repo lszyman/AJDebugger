@@ -1,4 +1,4 @@
-package pl.edu.agh.toik.debugger;
+package pl.edu.agh.toik.interfaces;
 
 import org.aspectj.lang.JoinPoint;
 
