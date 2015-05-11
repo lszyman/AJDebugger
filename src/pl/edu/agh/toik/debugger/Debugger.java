@@ -15,6 +15,7 @@ public class Debugger {
 	
 	private List<String> breakpointSignatures = new ArrayList<String>();
 	private DebuggerMode mode;
+	private DebuggerAction action;
 	
 	public static Debugger getInstance() {
 		if(instance == null) {
@@ -25,6 +26,7 @@ public class Debugger {
 	
 	private Debugger() {
 		mode = DebuggerMode.INCLUSIVE;
+		action = DebuggerAction.NEXT_BREAKPOINT;
 	}
 	
 	public void setInterface(DebuggerInterface debuggerInterface) {
@@ -53,5 +55,13 @@ public class Debugger {
 	
 	public void setMode(DebuggerMode mode) {
 		this.mode = mode;
+	}
+	
+	public DebuggerAction getAction() {
+		return action;
+	}
+
+	public void setAction(DebuggerAction action) {
+		this.action = action;
 	}
 }

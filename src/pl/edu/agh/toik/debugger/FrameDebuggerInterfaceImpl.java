@@ -25,9 +25,14 @@ public class FrameDebuggerInterfaceImpl implements DebuggerInterface {
 			pointcutInfo.append("\tClass: " + arg.getClass().getName() + ",\tValue: " + arg.toString()+"\n");
 		
 		Command command = new Command() {
-			public void execute() {
+			public void nextBreakpoint() {
 				stop = false;
+				Debugger.getInstance().setAction(DebuggerAction.NEXT_BREAKPOINT);
 			};
+			public void nextJoinpoint() {
+				stop = false;
+				Debugger.getInstance().setAction(DebuggerAction.NEXT_JOINPOINT);
+			}
 		};
 
 		new BreakpointFrame(pointcutInfo.toString()+"\nPAUSED\n", command);

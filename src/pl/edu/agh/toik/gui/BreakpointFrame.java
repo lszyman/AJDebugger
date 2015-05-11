@@ -69,7 +69,7 @@ public class BreakpointFrame extends JFrame {
 		btnNextPointcut.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				command.execute();
+				command.nextJoinpoint();
 				dispose();
 			}
 		});
@@ -83,7 +83,7 @@ public class BreakpointFrame extends JFrame {
 		btnNextBreakpoint.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				command.execute();
+				command.nextBreakpoint();
 				dispose();
 			}
 		});
