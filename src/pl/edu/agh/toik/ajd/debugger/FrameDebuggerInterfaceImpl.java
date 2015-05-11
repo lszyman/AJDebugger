@@ -1,11 +1,11 @@
-package pl.edu.agh.toik.debugger;
+package pl.edu.agh.toik.ajd.debugger;
 
 
 import org.aspectj.lang.JoinPoint;
 
-import pl.edu.agh.toik.gui.BreakpointFrame;
-import pl.edu.agh.toik.interfaces.Command;
-import pl.edu.agh.toik.interfaces.DebuggerInterface;
+import pl.edu.agh.toik.ajd.gui.BreakpointFrame;
+import pl.edu.agh.toik.ajd.interfaces.Command;
+import pl.edu.agh.toik.ajd.interfaces.DebuggerInterface;
 
 
 public class FrameDebuggerInterfaceImpl implements DebuggerInterface {

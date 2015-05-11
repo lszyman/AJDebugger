@@ -1,11 +1,11 @@
-package pl.edu.agh.toik.debugger;
+package pl.edu.agh.toik.ajd.debugger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
 
-import pl.edu.agh.toik.interfaces.DebuggerInterface;
+import pl.edu.agh.toik.ajd.interfaces.DebuggerInterface;
 
 
 public class Debugger {

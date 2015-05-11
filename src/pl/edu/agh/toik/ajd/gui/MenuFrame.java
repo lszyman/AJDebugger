@@ -1,4 +1,4 @@
-package pl.edu.agh.toik.gui;
+package pl.edu.agh.toik.ajd.gui;
 
 import java.awt.EventQueue;
 import java.awt.event.*;
@@ -23,9 +23,8 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
-import pl.edu.agh.toik.debugger.Debugger;
-import pl.edu.agh.toik.debugger.DebuggerMode;
-import pl.edu.agh.toik.debugger.FrameDebuggerInterfaceImpl;
+import pl.edu.agh.toik.ajd.debugger.Debugger;
+import pl.edu.agh.toik.ajd.debugger.DebuggerMode;
 import pl.edu.agh.toik.example.Car;
 
 public class MenuFrame extends JFrame {
@@ -40,23 +39,6 @@ public class MenuFrame extends JFrame {
 	private JList<String> jlistBreakpoints;
 	private DefaultListModel<String> breakpoints = new DefaultListModel<String>();
 	private final ButtonGroup modeButtonGroup = new ButtonGroup();
-
-	public static void main(String[] args) {
-		Debugger debugger = Debugger.getInstance();
-		debugger.setInterface(new FrameDebuggerInterfaceImpl());
-		//debugger.setInterface(new DebuggerInterfaceImpl());
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuFrame frame = new MenuFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public MenuFrame() throws IOException {
 		setTitle("AJDebugger");
@@ -196,15 +178,6 @@ public class MenuFrame extends JFrame {
 		btnTestBreakpoint.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				new Car().blank();
-				new Thread() {
-					@Override
-					public void run() {
-						Car car = new Car();
-						car.fuelUp();
-						car.setDriver("SomeDriver");
-					}
-				}.start();
 			}
 		});
 		contentPane.add(btnTestBreakpoint);
@@ -240,11 +213,12 @@ public class MenuFrame extends JFrame {
 					DefaultMutableTreeNode classItem = new DefaultMutableTreeNode(clazz.getSimpleName());
 					
 					Method[] methods = getMethods(clazzString);
-					for(Method method : methods) {
-						String signature = method.toString();
-						String withoutAccessModifier = signature.substring(signature.indexOf(method.getReturnType().getCanonicalName()));
-						classItem.add(new DefaultMutableTreeNode(withoutAccessModifier));
-					}
+					if(methods != null)
+						for(Method method : methods) {
+							String signature = method.toString();
+							String withoutAccessModifier = signature.substring(signature.indexOf(method.getReturnType().getCanonicalName()));
+							classItem.add(new DefaultMutableTreeNode(withoutAccessModifier));
+						}
 					packageItem.add(classItem);
 				}
 			}

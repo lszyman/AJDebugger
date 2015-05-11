@@ -1,4 +1,4 @@
-package pl.edu.agh.toik.gui;
+package pl.edu.agh.toik.ajd.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +17,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 
 import pl.edu.agh.toik.interfaces.Command;
-
 public class BreakpointFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
