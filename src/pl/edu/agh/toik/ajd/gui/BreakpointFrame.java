@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 
-import pl.edu.agh.toik.interfaces.Command;
+import pl.edu.agh.toik.ajd.interfaces.Command;
 public class BreakpointFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
