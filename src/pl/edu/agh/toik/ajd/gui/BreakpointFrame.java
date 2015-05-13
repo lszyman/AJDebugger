@@ -16,6 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 
+import org.aspectj.lang.JoinPoint;
+
+import pl.edu.agh.toik.ajd.debugger.Debugger;
 import pl.edu.agh.toik.ajd.interfaces.Command;
 public class BreakpointFrame extends JFrame {
 
@@ -26,8 +29,9 @@ public class BreakpointFrame extends JFrame {
 	private JButton btnNextPointcut;
 	
 	private Command command;
+	private JoinPoint joinpoint;
 	
-	public BreakpointFrame(String breakpointInfo, Command command) {
+	public BreakpointFrame(JoinPoint joinpoint, Command command) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(400, 200, 800, 600);
 		contentPane = new JPanel();
@@ -38,7 +42,7 @@ public class BreakpointFrame extends JFrame {
 		textArea = new JTextArea();
 		textArea.setBorder(new EmptyBorder(5, 5, 5, 5));
 		textArea.setEditable(false);
-		textArea.setText(breakpointInfo);
+		textArea.setText(getJoinPointInfo(joinpoint));
 		
 		JScrollPane spBreakpoints = new JScrollPane(textArea);
 		spBreakpoints.setBounds(5, 5, 400, 300);
@@ -53,6 +57,7 @@ public class BreakpointFrame extends JFrame {
 
 		setVisible(true);
 		
+		this.joinpoint = joinpoint;
 		this.command = command;
 	}
 	
@@ -87,5 +92,29 @@ public class BreakpointFrame extends JFrame {
 			}
 		});
 		contentPane.add(btnNextBreakpoint);
+		
+		JButton btnExclude = new JButton();
+		btnExclude.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String signature = joinpoint.getSignature().toLongString();
+				signature = signature.substring(signature.indexOf(" ") + 1);
+				Debugger.getInstance().addBreakpoint(signature);
+			}
+		});
+		btnExclude.setBounds(150, 500, 40, 40);
+		contentPane.add(btnExclude);
+	}
+	
+	private String getJoinPointInfo(JoinPoint joinpoint) {
+		StringBuilder pointcutInfo = new StringBuilder();
+		pointcutInfo.append("JoinPoint " + joinpoint.toShortString()+"\n");
+		pointcutInfo.append("\tKind: " + joinpoint.getKind()+"\n");
+		pointcutInfo.append("\tSignature: " + joinpoint.getSignature()+"\n");
+		pointcutInfo.append("\tSourceLocation: " + joinpoint.getSourceLocation()+"\n");
+		pointcutInfo.append("\tArgs:\n");
+		for(Object arg : joinpoint.getArgs())
+			pointcutInfo.append("\tClass: " + arg.getClass().getName() + ",\tValue: " + arg.toString()+"\n");
+		
+		return pointcutInfo.toString()+"\nPAUSED\n";
 	}
 }

@@ -35,7 +35,7 @@ public class FrameDebuggerInterfaceImpl implements DebuggerInterface {
 			}
 		};
 
-		new BreakpointFrame(pointcutInfo.toString()+"\nPAUSED\n", command);
+		new BreakpointFrame(joinpoint, command);
 
 		while(stop == true) {
 			try {
