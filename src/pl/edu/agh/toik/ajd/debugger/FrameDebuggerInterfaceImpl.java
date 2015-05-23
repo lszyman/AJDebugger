@@ -33,6 +33,10 @@ public class FrameDebuggerInterfaceImpl implements DebuggerInterface {
 				stop = false;
 				Debugger.getInstance().setAction(DebuggerAction.NEXT_JOINPOINT);
 			}
+			public void stepOver() {
+				stop = false;
+				Debugger.getInstance().setAction(DebuggerAction.STEP_OVER);
+			}
 		};
 
 		new BreakpointFrame(joinpoint, command);

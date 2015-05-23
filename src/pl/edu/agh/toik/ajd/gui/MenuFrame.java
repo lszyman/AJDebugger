@@ -1,6 +1,5 @@
 package pl.edu.agh.toik.ajd.gui;
 
-import java.awt.EventQueue;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,7 +24,6 @@ import org.reflections.util.FilterBuilder;
 
 import pl.edu.agh.toik.ajd.debugger.Debugger;
 import pl.edu.agh.toik.ajd.debugger.DebuggerMode;
-import pl.edu.agh.toik.example.Car;
 
 public class MenuFrame extends JFrame {
 

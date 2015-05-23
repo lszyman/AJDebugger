@@ -27,6 +27,7 @@ public class BreakpointFrame extends JFrame {
 	private JTextArea textArea;
 	private JButton btnNextBreakpoint;
 	private JButton btnNextPointcut;
+	private JButton btnStepOver;
 	
 	private Command command;
 	private JoinPoint joinpoint;
@@ -93,6 +94,19 @@ public class BreakpointFrame extends JFrame {
 		});
 		contentPane.add(btnNextBreakpoint);
 		
+		btnStepOver = new JButton();
+		btnStepOver.setToolTipText("Step over");
+		btnStepOver.setBounds(130, 500, 40, 40);
+		btnStepOver.setBorder(BorderFactory.createEmptyBorder());
+		btnStepOver.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				command.stepOver();
+				dispose();
+			}
+		});
+		contentPane.add(btnStepOver);
+		
 		JButton btnExclude = new JButton();
 		btnExclude.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -101,7 +115,7 @@ public class BreakpointFrame extends JFrame {
 				Debugger.getInstance().addBreakpoint(signature);
 			}
 		});
-		btnExclude.setBounds(150, 500, 40, 40);
+		btnExclude.setBounds(190, 500, 40, 40);
 		contentPane.add(btnExclude);
 	}
 	

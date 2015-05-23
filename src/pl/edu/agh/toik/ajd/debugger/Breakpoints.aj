@@ -37,7 +37,8 @@ public aspect Breakpoints {
 		String signature = thisJoinPoint.getSignature().toLongString();
 		signature = signature.substring(signature.indexOf(" ")+1);
 		
-		if( ( debugger.getAction() == DebuggerAction.NEXT_JOINPOINT )
+		if( ( debugger.getAction().equals(DebuggerAction.NEXT_JOINPOINT) )
+			|| ( debugger.getAction().equals(DebuggerAction.STEP_OVER) && !debugger.isInside() )
 			|| ( debugger.getMode().equals(DebuggerMode.INCLUSIVE) && signatures.contains(signature) ) 
 			|| ( debugger.getMode().equals(DebuggerMode.EXCLUSIVE) && !signatures.contains(signature) )
 		) {
@@ -45,7 +46,10 @@ public aspect Breakpoints {
 			debugger.pauseExecution(thisJoinPoint);
 		}
 		
+		debugger.setInside(true);
 		Object obj = proceed();
+		debugger.setInside(false);
+		
 		return obj;
 	}
 }

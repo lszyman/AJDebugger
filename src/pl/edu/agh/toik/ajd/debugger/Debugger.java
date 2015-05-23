@@ -2,6 +2,7 @@ package pl.edu.agh.toik.ajd.debugger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import org.aspectj.lang.JoinPoint;
 
@@ -16,6 +17,7 @@ public class Debugger {
 	private List<String> breakpointSignatures = new ArrayList<String>();
 	private DebuggerMode mode;
 	private DebuggerAction action;
+	private boolean isInside;
 	
 	public static Debugger getInstance() {
 		if(instance == null) {
@@ -63,5 +65,13 @@ public class Debugger {
 
 	public void setAction(DebuggerAction action) {
 		this.action = action;
+	}
+	
+	public void setInside(boolean isInside) {
+		this.isInside = isInside;
+	}
+
+	public boolean isInside() {
+		return isInside;
 	}
 }

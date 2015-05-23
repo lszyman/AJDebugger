@@ -4,4 +4,5 @@ public interface Command {
 	
 	void nextJoinpoint();
 	void nextBreakpoint();
+	void stepOver();
 }
