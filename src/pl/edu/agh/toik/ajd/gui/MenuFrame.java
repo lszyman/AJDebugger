@@ -73,7 +73,7 @@ public class MenuFrame extends JFrame {
 		contentPane.add(spBreakpoints);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(198, 668, 138, 60);
+		panel.setBounds(540, 668, 138, 60);
 		contentPane.add(panel);
 		
 		JLabel lblModes = new JLabel("Modes:");
@@ -120,7 +120,6 @@ public class MenuFrame extends JFrame {
 		
 		JButton btnLookFor = new JButton(new ImageIcon(btnIconSearch));
 		btnLookFor.setBounds(383, 12, 32, 32);
-		btnLookFor.setBorder(BorderFactory.createEmptyBorder());
 		btnLookFor.setContentAreaFilled(false);
 		btnLookFor.addActionListener(new ActionListener() {
 			

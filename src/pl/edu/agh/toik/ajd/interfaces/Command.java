@@ -2,7 +2,8 @@ package pl.edu.agh.toik.ajd.interfaces;
 
 public interface Command {
 	
-	void nextJoinpoint();
 	void nextBreakpoint();
+	void stepInto();
 	void stepOver();
+	void stepOut();
 }

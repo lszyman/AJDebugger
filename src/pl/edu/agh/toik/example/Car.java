@@ -10,6 +10,7 @@ public class Car implements Vehicle {
 
 	public void setDriver(String driver) {
 		this.driver = driver;
+		System.out.println("Driver has changed");
 		System.out.println("Driver is now "+driver);
 	}
 	

@@ -17,7 +17,9 @@ public class Debugger {
 	private List<String> breakpointSignatures = new ArrayList<String>();
 	private DebuggerMode mode;
 	private DebuggerAction action;
-	private boolean isInside;
+	private boolean isInside = false;
+	private int depth = 0;
+	private int wantedDepth = -1;
 	
 	public static Debugger getInstance() {
 		if(instance == null) {
@@ -73,5 +75,23 @@ public class Debugger {
 
 	public boolean isInside() {
 		return isInside;
+	}
+
+	public void increaseDepth() {
+		depth++;		
+	}
+
+	public void reduceDeph() {
+		depth--;
+	}
+
+	public void setWantedDepth() {
+		wantedDepth = depth-1;
+	}
+	
+	public boolean isWantedDepth() {
+		if(wantedDepth==depth)
+			return true;
+		return false;
 	}
 }

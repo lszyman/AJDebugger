@@ -25,9 +25,6 @@ public class BreakpointFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextArea textArea;
-	private JButton btnNextBreakpoint;
-	private JButton btnNextPointcut;
-	private JButton btnStepOver;
 	
 	private Command command;
 	private JoinPoint joinpoint;
@@ -63,26 +60,15 @@ public class BreakpointFrame extends JFrame {
 	}
 	
 	private void createButtons() throws IOException {
-		BufferedImage btnIconNextPointcut = ImageIO.read(new File("images/next_pointcut.png"));
-		BufferedImage btnIconNextBreakPoint = ImageIO.read(new File("images/next_breakpoint.png"));
+		BufferedImage btnIconNextBreakpoint = ImageIO.read(new File("images/next_breakpoint.png"));
+		BufferedImage btnIconStepInto = ImageIO.read(new File("images/step_into.png"));
+		BufferedImage btnIconStepOver = ImageIO.read(new File("images/step_over.png"));
+		BufferedImage btnIconStepOut = ImageIO.read(new File("images/step_out.png"));
+		BufferedImage btnIconExclude = ImageIO.read(new File("images/exclude.png"));
 		
-		btnNextPointcut = new JButton(new ImageIcon(btnIconNextPointcut));
-		btnNextPointcut.setToolTipText("Next pointcut");
-		btnNextPointcut.setBounds(10, 500, 40, 40);
-		btnNextPointcut.setBorder(BorderFactory.createEmptyBorder());
-		btnNextPointcut.setContentAreaFilled(false);
-		btnNextPointcut.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				command.nextJoinpoint();
-				dispose();
-			}
-		});
-		contentPane.add(btnNextPointcut);
-		
-		btnNextBreakpoint = new JButton(new ImageIcon(btnIconNextBreakPoint));
+		JButton btnNextBreakpoint = new JButton(new ImageIcon(btnIconNextBreakpoint));
 		btnNextBreakpoint.setToolTipText("Next breakpoint");
-		btnNextBreakpoint.setBounds(70, 500, 40, 40);
+		btnNextBreakpoint.setBounds(10, 500, 40, 40);
 		btnNextBreakpoint.setBorder(BorderFactory.createEmptyBorder());
 		btnNextBreakpoint.setContentAreaFilled(false);
 		btnNextBreakpoint.addActionListener(new ActionListener() {
@@ -94,10 +80,25 @@ public class BreakpointFrame extends JFrame {
 		});
 		contentPane.add(btnNextBreakpoint);
 		
-		btnStepOver = new JButton();
+		JButton btnStepInto = new JButton(new ImageIcon(btnIconStepInto));
+		btnStepInto.setToolTipText("Step into");
+		btnStepInto.setBounds(70, 500, 40, 40);
+		btnStepInto.setBorder(BorderFactory.createEmptyBorder());
+		btnStepInto.setContentAreaFilled(false);
+		btnStepInto.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				command.stepInto();
+				dispose();
+			}
+		});
+		contentPane.add(btnStepInto);
+		
+		JButton btnStepOver = new JButton(new ImageIcon(btnIconStepOver));
 		btnStepOver.setToolTipText("Step over");
 		btnStepOver.setBounds(130, 500, 40, 40);
 		btnStepOver.setBorder(BorderFactory.createEmptyBorder());
+		btnStepOver.setContentAreaFilled(false);
 		btnStepOver.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -107,7 +108,25 @@ public class BreakpointFrame extends JFrame {
 		});
 		contentPane.add(btnStepOver);
 		
-		JButton btnExclude = new JButton();
+		JButton btnStepOut = new JButton(new ImageIcon(btnIconStepOut));
+		btnStepOut.setToolTipText("Step out");
+		btnStepOut.setBounds(190, 500, 40, 40);
+		btnStepOut.setBorder(BorderFactory.createEmptyBorder());
+		btnStepOut.setContentAreaFilled(false);
+		btnStepOut.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				command.stepOut();
+				dispose();
+			}
+		});
+		contentPane.add(btnStepOut);
+		
+		JButton btnExclude = new JButton(new ImageIcon(btnIconExclude));
+		btnExclude.setToolTipText("Exclude this joinpoint");
+		btnExclude.setBounds(250, 500, 40, 40);
+		btnExclude.setBorder(BorderFactory.createEmptyBorder());
+		btnExclude.setContentAreaFilled(false);
 		btnExclude.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String signature = joinpoint.getSignature().toLongString();
@@ -115,7 +134,6 @@ public class BreakpointFrame extends JFrame {
 				Debugger.getInstance().addBreakpoint(signature);
 			}
 		});
-		btnExclude.setBounds(190, 500, 40, 40);
 		contentPane.add(btnExclude);
 	}
 	
