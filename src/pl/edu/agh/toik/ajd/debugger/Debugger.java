@@ -81,7 +81,7 @@ public class Debugger {
 		depth++;		
 	}
 
-	public void reduceDeph() {
+	public void reduceDepth() {
 		depth--;
 	}
 
