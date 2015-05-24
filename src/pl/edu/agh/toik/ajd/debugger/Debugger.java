@@ -2,7 +2,6 @@ package pl.edu.agh.toik.ajd.debugger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import org.aspectj.lang.JoinPoint;
 
@@ -20,6 +19,8 @@ public class Debugger {
 	private boolean isInside = false;
 	private int depth = 0;
 	private int wantedDepth = -1;
+	
+	private Object[] customArgs;
 	
 	public static Debugger getInstance() {
 		if(instance == null) {
@@ -93,5 +94,13 @@ public class Debugger {
 		if(wantedDepth==depth)
 			return true;
 		return false;
+	}
+
+	public Object[] getCustomArgs() {
+		return customArgs;
+	}
+
+	public void setCustomArgs(Object[] customArgs) {
+		this.customArgs = customArgs;
 	}
 }

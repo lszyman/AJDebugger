@@ -63,20 +63,46 @@ public class AJBreakpoints {
 			debugger.pauseExecution(pjp);
 		}
 		
-		Object[] args = pjp.getArgs();
+		Object[] args = changeArgs(pjp.getArgs(), debugger.getCustomArgs()); //podmiana argumentow funkcji
 		
 		debugger.setInside(true);	//potrzebne do step_over
 		debugger.increaseDepth();	//potrzebne do step_out
-		Object obj;
+		Object obj = null;
 		try {
 			obj = pjp.proceed(args);
 		} catch (Throwable e) {
 			e.printStackTrace();
-			return null;
 		}
 		debugger.reduceDepth();
 		debugger.setInside(false);
+		debugger.setCustomArgs(new Object[0]);	//czyszczenie argumentow funkcji z poprzedniego wywolania
 		
 		return obj;
+	}
+	
+	private Object[] changeArgs(Object[] args, Object[] customArgs) {
+		if(args.length == customArgs.length) {
+			for (int i = 0; i < args.length; i++) {
+				Class<? extends Object> clazz = args[i].getClass();
+				if(clazz == String.class) {
+					args[i] = new String(customArgs[i].toString());
+					break;
+				} else if(clazz == Integer.class || clazz == int.class) {
+					args[i] = Integer.parseInt(customArgs[i].toString());
+					break;
+				} else if(clazz == Long.class || clazz == long.class) {
+					args[i] = Long.parseLong((String)customArgs[i]);
+					break;
+				} else if(clazz == Float.class || clazz == float.class) {
+					args[i] = Float.parseFloat(customArgs[i].toString());	
+					break;
+				} else if(clazz == Double.class || clazz == double.class) {
+					args[i] = Double.parseDouble(customArgs[i].toString());
+					break;
+				}
+			}
+		}
+		
+		return args;
 	}
 }
