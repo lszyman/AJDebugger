@@ -26,7 +26,9 @@ public class FrameDebuggerInterfaceImpl implements DebuggerInterface {
 			}
 			public void stepOver() {
 				stop = false;
-				Debugger.getInstance().setAction(DebuggerAction.STEP_OVER);
+				Debugger debugger = Debugger.getInstance();
+				debugger.setWantedInside();
+				debugger.setAction(DebuggerAction.STEP_OVER);
 			}
 			public void stepOut() {
 				stop = false;

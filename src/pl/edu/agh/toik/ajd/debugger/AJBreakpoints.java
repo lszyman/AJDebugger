@@ -54,7 +54,7 @@ public class AJBreakpoints {
 		signature = signature.substring(signature.indexOf(" ")+1);
 		
 		if( ( debugger.getAction().equals(DebuggerAction.STEP_INTO) )
-			|| ( debugger.getAction().equals(DebuggerAction.STEP_OVER) && !debugger.isInside() )
+			|| ( debugger.getAction().equals(DebuggerAction.STEP_OVER) && debugger.isWantedInside() )
 			|| ( debugger.getAction().equals(DebuggerAction.STEP_OUT) && debugger.isWantedDepth() )
 			|| ( debugger.getMode().equals(DebuggerMode.INCLUSIVE) && signatures.contains(signature) ) 
 			|| ( debugger.getMode().equals(DebuggerMode.EXCLUSIVE) && !signatures.contains(signature) )
@@ -65,7 +65,7 @@ public class AJBreakpoints {
 		
 		Object[] args = changeArgs(pjp.getArgs(), debugger.getCustomArgs()); //podmiana argumentow funkcji
 		
-		debugger.setInside(true);	//potrzebne do step_over
+		debugger.increaseInside();	//potrzebne do step_over
 		debugger.increaseDepth();	//potrzebne do step_out
 		Object obj = null;
 		try {
@@ -74,7 +74,7 @@ public class AJBreakpoints {
 			e.printStackTrace();
 		}
 		debugger.reduceDepth();
-		debugger.setInside(false);
+		debugger.reduceInside();
 		debugger.setCustomArgs(new Object[0]);	//czyszczenie argumentow funkcji z poprzedniego wywolania
 		
 		return obj;

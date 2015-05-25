@@ -16,7 +16,8 @@ public class Debugger {
 	private List<String> breakpointSignatures = new ArrayList<String>();
 	private DebuggerMode mode;
 	private DebuggerAction action;
-	private boolean isInside = false;
+	private int insideDepth = 0;
+	private int wantedInside = -1;
 	private int depth = 0;
 	private int wantedDepth = -1;
 	
@@ -70,12 +71,22 @@ public class Debugger {
 		this.action = action;
 	}
 	
-	public void setInside(boolean isInside) {
-		this.isInside = isInside;
+	public void increaseInside() {
+		this.insideDepth++;
+	}
+	
+	public void reduceInside() {
+		this.insideDepth--;
+	}
+	
+	public void setWantedInside() {
+		wantedInside = insideDepth;
 	}
 
-	public boolean isInside() {
-		return isInside;
+	public boolean isWantedInside() {
+		if(wantedInside == insideDepth)
+			return true;
+		return false;
 	}
 
 	public void increaseDepth() {
