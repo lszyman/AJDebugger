@@ -47,6 +47,17 @@ public class AJBreakpoints {
 	@Around("allCalls() && !debuggerContext()")
 	public Object aroundAllCalls(ProceedingJoinPoint pjp) {
 		
+		StringBuilder pointcutInfo = new StringBuilder();
+		pointcutInfo.append("JoinPoint " + pjp.toShortString()+"\n");
+		pointcutInfo.append("\tKind: " + pjp.getKind()+"\n");
+		pointcutInfo.append("\tSignature: " + pjp.getSignature()+"\n");
+		pointcutInfo.append("\tSourceLocation: " + pjp.getSourceLocation()+"\n");
+		pointcutInfo.append("\tArgs:\n");
+		for(Object arg : pjp.getArgs())
+			pointcutInfo.append("\tClass: " + arg.getClass().getName() + ",\tValue: " + arg.toString()+"\n");
+		
+		System.out.println(pointcutInfo.toString());
+		
 		Debugger debugger = Debugger.getInstance();
 		List<String> signatures = debugger.getBreakpointSignatrues();
 		
