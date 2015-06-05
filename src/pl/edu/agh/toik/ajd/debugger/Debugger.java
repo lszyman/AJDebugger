@@ -106,6 +106,11 @@ public class Debugger {
 			return true;
 		return false;
 	}
+	
+	public void resetInsideAndDepth() {
+		wantedInside = -1;
+		wantedDepth = -1;
+	}
 
 	public Object[] getCustomArgs() {
 		return customArgs;

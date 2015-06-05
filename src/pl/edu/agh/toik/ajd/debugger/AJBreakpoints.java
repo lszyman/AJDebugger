@@ -27,8 +27,8 @@ public class AJBreakpoints {
 	@Pointcut("execution(public static void main(String[]))")
 	void init() {}
 	
-	@Before("init()")
-	public void beforeInit(JoinPoint joinPoint) {
+	@Around("init()")
+	public Object aroundInit(ProceedingJoinPoint pjp) {
 		Debugger debugger = Debugger.getInstance();
 		debugger.setInterface(new FrameDebuggerInterfaceImpl());
 		EventQueue.invokeLater(new Runnable() {
@@ -41,22 +41,15 @@ public class AJBreakpoints {
 				}
 			}
 		});
-		debugger.pauseExecution(joinPoint);
+		debugger.pauseExecution(pjp);
+		
+		return wrapProceed(pjp);
 	}
 	
 	@Around("allCalls() && !debuggerContext()")
 	public Object aroundAllCalls(ProceedingJoinPoint pjp) {
 		
-		StringBuilder pointcutInfo = new StringBuilder();
-		pointcutInfo.append("JoinPoint " + pjp.toShortString()+"\n");
-		pointcutInfo.append("\tKind: " + pjp.getKind()+"\n");
-		pointcutInfo.append("\tSignature: " + pjp.getSignature()+"\n");
-		pointcutInfo.append("\tSourceLocation: " + pjp.getSourceLocation()+"\n");
-		pointcutInfo.append("\tArgs:\n");
-		for(Object arg : pjp.getArgs())
-			pointcutInfo.append("\tClass: " + arg.getClass().getName() + ",\tValue: " + arg.toString()+"\n");
-		
-		System.out.println(pointcutInfo.toString());
+		printConsoleJoinPoint(pjp);
 		
 		Debugger debugger = Debugger.getInstance();
 		List<String> signatures = debugger.getBreakpointSignatrues();
@@ -70,11 +63,21 @@ public class AJBreakpoints {
 			|| ( debugger.getMode().equals(DebuggerMode.INCLUSIVE) && signatures.contains(signature) ) 
 			|| ( debugger.getMode().equals(DebuggerMode.EXCLUSIVE) && !signatures.contains(signature) )
 		) {
+//			System.out.println(debugger.getAction()+" +"+debugger.isWantedInside()+"+"+debugger.isWantedDepth()+"+ "+debugger.getMode()+" -- "+ signatures.contains(signature));
+//			System.out.println(debugger.insideDepth+"="+debugger.wantedInside);
+//			System.out.println(debugger.depth+"="+debugger.wantedDepth);
 			debugger.setAction(DebuggerAction.NONE);
+			debugger.resetInsideAndDepth();
 			debugger.pauseExecution(pjp);
 		}
 		
+		return wrapProceed(pjp);
+	}
+	
+	private Object wrapProceed(ProceedingJoinPoint pjp) {
+		Debugger debugger = Debugger.getInstance();
 		Object[] args = changeArgs(pjp.getArgs(), debugger.getCustomArgs()); //podmiana argumentow funkcji
+		debugger.setCustomArgs(new Object[0]);	//czyszczenie argumentow funkcji z poprzedniego wywolania
 		
 		debugger.increaseInside();	//potrzebne do step_over
 		debugger.increaseDepth();	//potrzebne do step_out
@@ -86,9 +89,22 @@ public class AJBreakpoints {
 		}
 		debugger.reduceDepth();
 		debugger.reduceInside();
-		debugger.setCustomArgs(new Object[0]);	//czyszczenie argumentow funkcji z poprzedniego wywolania
 		
 		return obj;
+	}
+	
+	//TODO: usunac
+	private void printConsoleJoinPoint(ProceedingJoinPoint pjp) {
+		StringBuilder pointcutInfo = new StringBuilder();
+		pointcutInfo.append("JoinPoint " + pjp.toShortString()+"\n");
+		pointcutInfo.append("\tKind: " + pjp.getKind()+"\n");
+		pointcutInfo.append("\tSignature: " + pjp.getSignature()+"\n");
+		pointcutInfo.append("\tSourceLocation: " + pjp.getSourceLocation()+"\n");
+		pointcutInfo.append("\tArgs:\n");
+		for(Object arg : pjp.getArgs())
+			pointcutInfo.append("\tClass: " + arg.getClass().getName() + ",\tValue: " + arg.toString()+"\n");
+		
+		System.out.println(pointcutInfo.toString());
 	}
 	
 	private Object[] changeArgs(Object[] args, Object[] customArgs) {
