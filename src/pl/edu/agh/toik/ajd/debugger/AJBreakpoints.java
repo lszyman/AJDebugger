@@ -3,11 +3,9 @@ package pl.edu.agh.toik.ajd.debugger;
 import java.awt.EventQueue;
 import java.util.List;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 
 import pl.edu.agh.toik.ajd.gui.MenuFrame;
@@ -26,6 +24,15 @@ public class AJBreakpoints {
 	
 	@Pointcut("execution(public static void main(String[]))")
 	void init() {}
+	
+//	@Pointcut("within(@pl.edu.agh.toik.ajd.annotation.AJDebugOnly *)")
+//	void ajdebugOnly() {}
+	
+	@Pointcut("within(@pl.edu.agh.toik.ajd.annotation.AJDebugWithout *) || execution(@pl.edu.agh.toik.ajd.annotation.AJDebugWithout * *()) || call(@pl.edu.agh.toik.ajd.annotation.AJDebugWithout * *(..))")
+	void ajdebugWithout() {}
+	
+//	@Pointcut("ajdebugOnly() && (allExecutions() || allCalls()) && !debuggerContext()")
+//	void allExecutionsWithOnlyAnnotation() {}
 	
 	@Around("init()")
 	public Object aroundInit(ProceedingJoinPoint pjp) {
@@ -46,7 +53,7 @@ public class AJBreakpoints {
 		return wrapProceed(pjp);
 	}
 	
-	@Around("allCalls() && !debuggerContext()")
+	@Around("!ajdebugWithout() && allCalls() && !debuggerContext()")
 	public Object aroundAllCalls(ProceedingJoinPoint pjp) {
 		
 		printConsoleJoinPoint(pjp);

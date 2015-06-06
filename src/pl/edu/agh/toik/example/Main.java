@@ -13,7 +13,8 @@ public class Main {
 	}
 	
 	public static void main3() {
-
+		Train train = new Train();
+		train.fuelUp();
 	}
 	
 	public static void main4() {
