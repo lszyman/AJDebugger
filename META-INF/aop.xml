@@ -1,0 +1,11 @@
+<aspectj>
+    <aspects>
+		<aspect name="pl.edu.agh.toik.ajd.debugger.AbstractBreakpoints"/>
+        <concrete-aspect name="ConcreteBreakpoints" extends="pl.edu.agh.toik.ajd.debugger.AbstractBreakpoints">
+            <pointcut name="allCalls" expression="call(* fuelUp(..))"/>
+        </concrete-aspect>
+    </aspects>
+	<weaver options="-verbose">
+		<include within="pl.edu.agh.toik.example.Main"/>
+	</weaver>
+</aspectj>
