@@ -7,17 +7,17 @@ public abstract aspect AbstractBreakpointsAspect {
 	
 	abstract pointcut allCalls();
 	
+	pointcut allExecutions(): execution(* *(..));
+	
 	pointcut debuggerContext(): within(pl.edu.agh.toik.ajd..*) || call(* pl.edu.agh.toik.ajd.debugger.Debugger.*(..));
 	
 	pointcut init(): execution(public static void main(String[]));
 	
-	pointcut mainPointcut(): !ajdebugWithout() && allCalls() && !debuggerContext();
-	
 	pointcut ajdebugWithout(): within(@pl.edu.agh.toik.ajd.annotation.AJDebugWithout *) || execution(@pl.edu.agh.toik.ajd.annotation.AJDebugWithout * *()) || call(@pl.edu.agh.toik.ajd.annotation.AJDebugWithout * *(..));
+	pointcut ajdebugOnly(): within(@pl.edu.agh.toik.ajd.annotation.AJDebugOnly *) || execution(@pl.edu.agh.toik.ajd.annotation.AJDebugOnly * *()) || call(@pl.edu.agh.toik.ajd.annotation.AJDebugOnly * *(..));
 	
-//	pointcut ajdebugOnly(): within(@pl.edu.agh.toik.ajd.annotation.AJDebugOnly *) || execution(@pl.edu.agh.toik.ajd.annotation.AJDebugOnly * *()) || call(@pl.edu.agh.toik.ajd.annotation.AJDebugOnly * *(..));
-//	
-//	pointcut allExecutionsWithOnlyAnnotation(): ajdebugOnly() && allCalls() && !debuggerContext();
+	pointcut mainPointcut(): !ajdebugWithout() && allCalls() && !debuggerContext();
+	pointcut mainPointcutWithOnlyAnnotation(): ajdebugOnly() && (allCalls() || allExecutions()) && !debuggerContext();
 	
 	protected void printConsoleJoinPoint(JoinPoint pjp) {
 		StringBuilder pointcutInfo = new StringBuilder();

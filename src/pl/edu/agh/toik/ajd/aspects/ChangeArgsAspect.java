@@ -1,7 +1,6 @@
 package pl.edu.agh.toik.ajd.aspects;
 
 import java.awt.EventQueue;
-import java.util.List;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -34,23 +33,13 @@ public class ChangeArgsAspect extends AbstractBreakpointsAspect {
 		});
 		debugger.pauseExecution(pjp);
 		
-		debugger.increaseInside();	//potrzebne do step_over
-		debugger.increaseDepth();	//potrzebne do step_out
-		Object obj = null;
-		try {
-			obj = pjp.proceed();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		debugger.reduceDepth();
-		debugger.reduceInside();
+		debugger.setCustomArgs(pjp.getArgs());
 		
-		return obj;
+		return wrapProceed(pjp);
 	}
 	
-	@Around("mainPointcut()")
+	@Around("mainPointcut() || mainPointcutWithOnlyAnnotation()")
 	public Object aroundAllCalls(ProceedingJoinPoint pjp) {
-		
 		return wrapProceed(pjp);
 	}
 	

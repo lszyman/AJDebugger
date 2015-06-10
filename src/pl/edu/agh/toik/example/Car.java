@@ -1,7 +1,9 @@
 package pl.edu.agh.toik.example;
 
+//import pl.edu.agh.toik.ajd.annotation.AJDebugOnly;
 import pl.edu.agh.toik.ajd.annotation.AJDebugWithout;
 
+//@AJDebugOnly
 @AJDebugWithout
 public class Car implements Vehicle {
 

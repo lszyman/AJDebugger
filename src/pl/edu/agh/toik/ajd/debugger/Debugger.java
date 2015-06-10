@@ -21,8 +21,10 @@ public class Debugger {
 	private int depth = 0;
 	private int wantedDepth = -1;
 	
-	private Object[] customArgs;
+	private Object[] customArgs = new Object[0];
 	
+	private boolean debugWithAJDebugOnly = false;
+
 	public static Debugger getInstance() {
 		if(instance == null) {
 			instance = new Debugger();
@@ -118,5 +120,13 @@ public class Debugger {
 
 	public void setCustomArgs(Object[] customArgs) {
 		this.customArgs = customArgs;
+	}
+	
+	public boolean isDebugWithAJDebugOnly() {
+		return debugWithAJDebugOnly;
+	}
+
+	public void setDebugWithAJDebugOnly(boolean debugWithAJDebugOnly) {
+		this.debugWithAJDebugOnly = debugWithAJDebugOnly;
 	}
 }

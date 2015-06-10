@@ -1,8 +1,11 @@
 package pl.edu.agh.toik.example;
 
+//import pl.edu.agh.toik.ajd.debugger.Debugger;
+
 public class Main {
 	
 	public static void main(String[] args) {
+//		Debugger.getInstance().setDebugWithAJDebugOnly(true);
 		main2();
 	}
 
