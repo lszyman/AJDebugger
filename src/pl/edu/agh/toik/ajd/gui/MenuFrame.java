@@ -168,17 +168,6 @@ public class MenuFrame extends JFrame {
 		});
 		contentPane.add(btnUnsetBreakpoint);
 		
-		JButton btnTestBreakpoint = new JButton();
-		btnTestBreakpoint.setText("Test");
-		btnTestBreakpoint.setBounds(15, 675, 106, 40);
-		btnTestBreakpoint.setContentAreaFilled(true);
-		btnTestBreakpoint.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		contentPane.add(btnTestBreakpoint);
-		
 		JButton btnRefreshBreakpoints = new JButton(new ImageIcon(btnIconRefresh));
 		btnRefreshBreakpoints.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
