@@ -13,7 +13,7 @@ public abstract aspect AbstractDefaultBreakpointsAspect extends AbstractBreakpoi
 		Debugger debugger = Debugger.getInstance();
 		
 		if(!debugger.isDebugWithAJDebugOnly()) {
-			printConsoleJoinPoint(thisJoinPoint);
+//			printConsoleJoinPoint(thisJoinPoint);
 			
 			List<String> signatures = debugger.getBreakpointSignatrues();
 			
@@ -42,7 +42,7 @@ public abstract aspect AbstractDefaultBreakpointsAspect extends AbstractBreakpoi
 		Debugger debugger = Debugger.getInstance();
 		
 		if(debugger.isDebugWithAJDebugOnly()) {
-			printConsoleJoinPoint(thisJoinPoint);
+//			printConsoleJoinPoint(thisJoinPoint);
 			
 			List<String> signatures = debugger.getBreakpointSignatrues();
 			
