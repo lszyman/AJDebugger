@@ -1,6 +1,7 @@
 <aspectj>
     <aspects>
 		<aspect name="pl.edu.agh.toik.ajd.aspects.AbstractDefaultBreakpointsAspect"/>
+		<aspect name="pl.edu.agh.toik.ajd.aspects.ChangeArgsAspect"/>
         <concrete-aspect name="ConcreteBreakpoints" extends="pl.edu.agh.toik.ajd.aspects.AbstractDefaultBreakpointsAspect">
             <pointcut name="allCalls" expression="call(* fuelUp(..))"/>
         </concrete-aspect>
